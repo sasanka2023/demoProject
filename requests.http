@@ -1,0 +1,66 @@
+@UserManagementApi_HostAddress = http://localhost:5123
+
+### 1. GET ALL USERS
+# Retrieves the initial list of users
+GET {{UserManagementApi_HostAddress}}/api/users
+Accept: application/json
+
+###
+
+### 2. GET USER BY ID (SUCCESS)
+# Retrieves Alice (ID: 1)
+GET {{UserManagementApi_HostAddress}}/api/users/1
+Accept: application/json
+
+###
+
+### 3. GET USER BY ID (NOT FOUND)
+# Tests the error message fallback for a non-existent ID
+GET {{UserManagementApi_HostAddress}}/api/users/999
+Accept: application/json
+
+###
+
+### 4. CREATE NEW USER (SUCCESS - POST)
+# Adds a brand new valid user to the collection
+POST {{UserManagementApi_HostAddress}}/api/users
+Content-Type: application/json
+
+{
+  "name": "Charlie Brown",
+  "email": "charlie@example.com",
+  "role": "User"
+}
+
+###
+
+### 5. CREATE NEW USER (VALIDATION FAILURE - POST)
+# Tests the manual validation fallback logic (Missing name and invalid email format)
+POST {{UserManagementApi_HostAddress}}/api/users
+Content-Type: application/json
+
+{
+  "name": "",
+  "email": "invalid-email-format",
+  "role": "Admin"
+}
+
+###
+
+### 6. UPDATE EXISTING USER (SUCCESS - PUT)
+# Updates Bob's details (ID: 2)
+PUT {{UserManagementApi_HostAddress}}/api/users/2
+Content-Type: application/json
+
+{
+  "name": "Bob Smith Fletcher",
+  "email": "bobsf@example.com",
+  "role": "Admin"
+}
+
+###
+
+### 7. DELETE A USER (SUCCESS - DELETE)
+# Removes Alice (ID: 1) from the collection
+DELETE {{UserManagementApi_HostAddress}}/api/users/1
+Accept: application/json
